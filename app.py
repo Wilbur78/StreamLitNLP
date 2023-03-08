@@ -21,7 +21,13 @@ LANG_DICT = dict(zip(LANGUAGES.values(), LANGUAGES.keys()))
 model = pipeline("conversational")
 
 # Load the English language model in spaCy
-nlp = spacy.load("en_core_web_sm")
+try:
+    nlp = spacy.load("en_core_web_sm")
+except OSError:
+    # if the model is not installed, download it
+    print("Downloading model...")
+    !python -m spacy download en_core_web_sm
+    nlp = spacy.load("en_core_web_sm")
 
 # Define function to translate text
 def translate_text(text, dest):

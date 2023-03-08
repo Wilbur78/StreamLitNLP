@@ -11,7 +11,7 @@ import streamlit as st
 from transformers import pipeline
 import googletrans
 from googletrans import LANGUAGES
-import spacy
+import spacy_streamlit
 
 # Set up translation dictionary
 translator = googletrans.Translator()
@@ -19,15 +19,6 @@ LANG_DICT = dict(zip(LANGUAGES.values(), LANGUAGES.keys()))
 
 # Set up chatbot model
 model = pipeline("conversational")
-
-# Load the English language model in spaCy
-try:
-    nlp = spacy.load("en_core_web_sm")
-except OSError:
-    # if the model is not installed, download it
-    print("Downloading model...")
-    !python -m spacy download en_core_web_sm
-    nlp = spacy.load("en_core_web_sm")
 
 # Define function to translate text
 def translate_text(text, dest):
@@ -90,4 +81,5 @@ def chatbot_input_output():
                     st.write(f"Bot: {grammar_explanation}")
             
 # Display chatbot interface
+spacy_streamlit.visualize(models=["en_core_web_sm"], text_input=True, visualization_options={"bg": "#F8F8F8"}, sidebar_title="Sidebar")
 chatbot_input_output()
